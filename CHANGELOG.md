@@ -4,6 +4,13 @@ Notable website changes are recorded here, with the newest work first.
 
 ## 2026-10-27
 
+### Changed
+
+- Switched the site to a lighter system font and reduced heading, body, post-link, and menu text sizes and weights.
+- Renamed the menu’s project area to Apps and added a responsive icon grid with optional dates and simple initial fallbacks.
+- Extended the shared project data so app names, links, dates, and icon paths stay together in `src/consts.ts`.
+- Removed the unused bundled Atkinson font setup after switching to system fonts.
+
 ### Added
 
 - Added a full-screen navigation menu with a hamburger-to-close icon, keyboard controls, page links, project links, and social links.

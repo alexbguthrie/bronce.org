@@ -1,4 +1,4 @@
-/* Theme tokens: change these first to adjust the site’s overall visual tone. */
+/* Shared typography, page layout, and menu styling for SiteMenu.astro and site pages. */
 :root {
 	color-scheme: dark;
 	--page-bg: #050505;
@@ -9,7 +9,7 @@
 	--line: #242424;
 	--content-width: 42rem;
 	--page-gutter: clamp(1.25rem, 4vw, 2rem);
-	font-family: var(--font-atkinson), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 }
@@ -105,8 +105,8 @@ svg {
 
 .profile h1 {
 	margin: 0 0 0.75rem;
-	font-size: clamp(1.65rem, 4vw, 2rem);
-	font-weight: 700;
+	font-size: clamp(1.5rem, 3.5vw, 1.8rem);
+	font-weight: 600;
 	letter-spacing: -0.035em;
 	line-height: 1.2;
 }
@@ -115,10 +115,10 @@ svg {
 	max-width: 42rem;
 	margin: 0;
 	color: #bdbdbd;
-	font-size: clamp(1.25rem, 3vw, 1.65rem);
-	font-weight: 650;
-	letter-spacing: -0.025em;
-	line-height: 1.35;
+	font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+	font-weight: 500;
+	letter-spacing: -0.015em;
+	line-height: 1.5;
 }
 
 .home-section {
@@ -159,9 +159,9 @@ svg {
 
 .writing-list a,
 .project-list a {
-	font-size: clamp(1.15rem, 2.8vw, 1.35rem);
-	font-weight: 600;
-	letter-spacing: -0.02em;
+	font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+	font-weight: 500;
+	letter-spacing: -0.015em;
 	line-height: 1.4;
 }
 
@@ -413,13 +413,13 @@ svg {
 .menu-group-label {
 	margin: 0 0 0.75rem;
 	color: var(--quiet);
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 	font-weight: 500;
 }
 
 .menu-list {
 	display: grid;
-	gap: 0.8rem;
+	gap: 0.65rem;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -428,10 +428,61 @@ svg {
 .menu-link {
 	width: fit-content;
 	color: var(--muted);
-	font-size: clamp(1.4rem, 4vw, 1.8rem);
-	font-weight: 650;
-	letter-spacing: -0.035em;
+	font-size: clamp(1.1rem, 2.4vw, 1.3rem);
+	font-weight: 500;
+	letter-spacing: -0.02em;
 	line-height: 1.2;
+}
+
+/* App cards echo the reference grid while staying compact and responsive. */
+.app-grid {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 2rem 1.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.app-card {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	flex-direction: column;
+	gap: 0.35rem;
+	color: var(--text);
+	text-align: center;
+}
+
+.app-icon {
+	display: grid;
+	width: 3.25rem;
+	height: 3.25rem;
+	margin-bottom: 0.2rem;
+	place-items: center;
+	border: 1px solid var(--line);
+	border-radius: 0.8rem;
+	background: var(--panel-bg);
+	object-fit: cover;
+}
+
+.app-icon-fallback {
+	color: var(--muted);
+	font-size: 1.25rem;
+	font-weight: 500;
+}
+
+.app-name {
+	max-width: 100%;
+	font-size: 0.9rem;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+.app-date {
+	color: var(--muted);
+	font-size: 0.8rem;
+	line-height: 1.3;
 }
 
 .menu-link[aria-current="page"],
@@ -488,6 +539,17 @@ svg {
 
 	.profile-avatar {
 		margin-bottom: 2rem;
+	}
+
+	.app-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.5rem 0.75rem;
+	}
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+	.app-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
 

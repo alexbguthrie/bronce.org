@@ -1,4 +1,5 @@
 ---
+/** Full-screen navigation, app grid, and social links; content comes from ../consts.ts. */
 import SocialLinks from './SocialLinks.tsx';
 import { MENU_LINKS, PROJECTS, SITE_TITLE } from '../consts';
 
@@ -62,12 +63,24 @@ const isCurrent = (href: string) =>
 		</section>
 
 		{PROJECTS.length > 0 && (
-			<section class="menu-group" aria-labelledby="menu-projects-heading">
-				<h2 class="menu-group-label" id="menu-projects-heading">Projects</h2>
-				<ul class="menu-list">
-					{PROJECTS.map((project) => (
+			<section class="menu-group" aria-labelledby="menu-apps-heading">
+				<h2 class="menu-group-label" id="menu-apps-heading">Apps</h2>
+				<ul class="app-grid">
+					{PROJECTS.map((app) => (
 						<li>
-							<a class="menu-link" href={project.href}>{project.title}</a>
+							<a class="app-card" href={app.href}>
+								{app.icon ? (
+									<img class="app-icon" src={app.icon} alt="" loading="lazy" />
+								) : (
+									<span class="app-icon app-icon-fallback" aria-hidden="true">
+										{app.title.slice(0, 1).toUpperCase()}
+									</span>
+								)}
+								<span class="app-name">{app.title}</span>
+								{(app.date || app.description) && (
+									<span class="app-date">{app.date ?? app.description}</span>
+								)}
+							</a>
 						</li>
 					))}
 				</ul>

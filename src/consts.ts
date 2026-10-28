@@ -1,4 +1,7 @@
-/** Shared identity, navigation, and link data used across the site. */
+/**
+ * Shared site data for the homepage, SiteMenu.astro, and SocialLinks.tsx.
+ * Edit navigation, app cards, and social destinations here instead of in markup.
+ */
 /** Edit this object to change the homepage introduction and initials avatar. */
 export const PROFILE = {
 	name: 'bronce',
@@ -39,9 +42,14 @@ export const SOCIAL_LINKS: SocialLink[] = [
 
 export interface Project {
 	title: string;
-	description: string;
 	href: string;
+	/** Short date or detail shown below an app name, e.g. "2024". */
+	date?: string;
+	/** Optional image path, usually from /public, for the app icon. */
+	icon?: string;
+	/** Optional summary used on the homepage project list. */
+	description?: string;
 }
 
-/** Add projects here when ready to feature on the homepage and in menu. */
+/** Apps are rendered in the menu grid and as a text list on the homepage. */
 export const PROJECTS: Project[] = [];

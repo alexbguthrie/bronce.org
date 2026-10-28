@@ -39,7 +39,7 @@ const recentPosts = (await getCollection('blog'))
 				{PROJECTS.map((project) => (
 					<li>
 						<a href={project.href}>{project.title}</a>
-						<p class="post-list-date">{project.description}</p>
+						{project.description && <p class="post-list-date">{project.description}</p>}
 					</li>
 				))}
 			</ul>
