@@ -1,15 +1,11 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { PROFILE, SITE_TITLE } from '../consts';
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		welcome
-	</p>
-</Layout>
+<SiteLayout title={`About · ${SITE_TITLE}`} pageLabel="About" description={PROFILE.intro}>
+	<article class="prose">
+		<h1 class="page-title">About</h1>
+		<p>Hi, I’m {PROFILE.name}. This site is where I collect my writing, projects, and notes.</p>
+	</article>
+</SiteLayout>

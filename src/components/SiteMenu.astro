@@ -1,0 +1,144 @@
+---
+import SocialLinks from './SocialLinks.tsx';
+import { MENU_LINKS, PROJECTS, SITE_TITLE } from '../consts';
+
+interface Props {
+	pageLabel?: string;
+}
+
+const { pageLabel } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+// Keep Home exact; mark a section link active on its nested pages too.
+const isCurrent = (href: string) =>
+	href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+---
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<button
+	class="menu-toggle"
+	type="button"
+	aria-label="Open menu"
+	aria-expanded="false"
+	aria-controls="site-menu"
+	data-menu-toggle
+>
+	<span class="menu-icon" aria-hidden="true">
+		<span></span>
+		<span></span>
+		<span></span>
+	</span>
+</button>
+
+{pageLabel && (
+	<nav class="page-breadcrumb" aria-label="Breadcrumb">
+		<ol>
+			<li><a href="/">{SITE_TITLE}</a></li>
+			<li aria-current="page">{pageLabel}</li>
+		</ol>
+	</nav>
+)}
+
+<div class="menu-panel" id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+	<div class="menu-content">
+		<section class="menu-group" aria-labelledby="menu-pages-heading">
+			<h2 class="menu-group-label" id="menu-pages-heading">Pages</h2>
+			<nav aria-label="Pages">
+				<ul class="menu-list">
+					{MENU_LINKS.map(({ label, href }) => (
+						<li>
+							<a
+								class="menu-link"
+								href={href}
+								aria-current={isCurrent(href) ? 'page' : undefined}
+							>
+								{label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</section>
+
+		{PROJECTS.length > 0 && (
+			<section class="menu-group" aria-labelledby="menu-projects-heading">
+				<h2 class="menu-group-label" id="menu-projects-heading">Projects</h2>
+				<ul class="menu-list">
+					{PROJECTS.map((project) => (
+						<li>
+							<a class="menu-link" href={project.href}>{project.title}</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
+	</div>
+	<SocialLinks />
+</div>
+
+<script>
+	const toggle = document.querySelector('[data-menu-toggle]');
+	const panel = document.querySelector('#site-menu');
+
+	if (toggle instanceof HTMLButtonElement && panel instanceof HTMLElement) {
+		let closeTimer: number | undefined;
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const closeDelay = reduceMotion ? 0 : 180;
+
+		const setOpen = (open) => {
+			// Keep the visual toggle, accessible label, and page scroll state in sync.
+			window.clearTimeout(closeTimer);
+			toggle.setAttribute('aria-expanded', String(open));
+			toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+			document.body.classList.toggle('menu-open', open);
+
+			if (open) {
+				// Unhide first so the opacity change can animate from its closed state.
+				panel.hidden = false;
+				void panel.offsetHeight;
+				panel.classList.add('is-open');
+
+				// Move keyboard focus into the overlay; return it to the toggle on close.
+				panel.querySelector('a')?.focus();
+			} else {
+				panel.classList.remove('is-open');
+				// Keep the panel in the document until its fade-out finishes.
+				closeTimer = window.setTimeout(() => {
+					if (toggle.getAttribute('aria-expanded') !== 'true') panel.hidden = true;
+				}, closeDelay);
+				toggle.focus();
+			}
+		};
+
+		toggle.addEventListener('click', () => {
+			setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+		});
+
+		// Keep keyboard navigation inside the modal menu while it is open.
+		panel.addEventListener('keydown', (event) => {
+			if (event.key !== 'Tab') return;
+
+			const focusable = Array.from(
+				panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+			);
+			const first = focusable[0];
+			const last = focusable.at(-1);
+
+			if (!first || !last) return;
+			if (event.shiftKey && document.activeElement === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && document.activeElement === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+				setOpen(false);
+			}
+		});
+	}
+</script>

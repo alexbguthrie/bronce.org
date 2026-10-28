@@ -1,26 +1,48 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { PROFILE, PROJECTS } from '../consts';
+
+// The homepage shows only the five newest posts; the Writing page lists them all.
+const recentPosts = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 5);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>bronce</h1>
-			<p>
-				This template comes with a few integrations already configured in your{' '}
-				<code>astro.config.mjs</code> file. You can customize your setup with{' '}
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like
-				Tailwind, React, or Vue to your project.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<SiteLayout>
+	<section class="profile" aria-labelledby="profile-name">
+		<div class="profile-avatar" aria-hidden="true">{PROFILE.initials}</div>
+		<h1 id="profile-name">{PROFILE.name}</h1>
+		<p class="profile-intro">{PROFILE.intro}</p>
+	</section>
+
+	<section class="home-section" aria-labelledby="writing-heading">
+		<div class="section-heading">
+			<h2 id="writing-heading">Writing</h2>
+			<a href="/blog/">All posts <span aria-hidden="true">›</span></a>
+		</div>
+		<ul class="writing-list">
+			{recentPosts.map((post) => (
+				<li>
+					<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+				</li>
+			))}
+		</ul>
+	</section>
+
+	{PROJECTS.length > 0 && (
+		<section class="home-section" id="projects" aria-labelledby="projects-heading">
+			<div class="section-heading">
+				<h2 id="projects-heading">Projects</h2>
+			</div>
+			<ul class="project-list">
+				{PROJECTS.map((project) => (
+					<li>
+						<a href={project.href}>{project.title}</a>
+						<p class="post-list-date">{project.description}</p>
+					</li>
+				))}
+			</ul>
+		</section>
+	)}
+</SiteLayout>

@@ -1,67 +1,47 @@
-# Astro Starter Kit: Blog
+# bronce.org
 
-```sh
-npm create astro@latest -- --template blog
-```
+A personal website built with Astro. The site uses a shared dark layout, a full-screen navigation menu, and a Markdown/MDX blog.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Where to edit things
 
-Features:
+| Change | File or folder |
+| --- | --- |
+| Name, intro, menu links, social links, and projects | `src/consts.ts` |
+| Site colors, spacing, typography, and responsive styles | `src/styles/global.css` |
+| Homepage sections and latest-post list | `src/pages/index.astro` |
+| Menu behavior and page selection | `src/components/SiteMenu.astro` |
+| Social icon markup | `src/components/SocialLinks.tsx` |
+| About page copy | `src/pages/about.astro` |
+| Blog posts | `src/content/blog/` |
+| Blog post metadata requirements | `src/content.config.ts` |
+| Shared page shell and metadata | `src/layouts/SiteLayout.astro`, `src/components/BaseHead.astro` |
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+Add a project to the `PROJECTS` list in `src/consts.ts`. The homepage section and menu group appear automatically when that list has entries.
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+src/
+  assets/       Images and local fonts
+  components/   Reusable page pieces and the site menu
+  content/blog/ Markdown and MDX posts
+  layouts/      Shared document and article layouts
+  pages/        URL routes, including the RSS endpoint
+  styles/       Site-wide theme and layout rules
+  consts.ts     Editable site identity and navigation data
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Local commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```sh
+npm install
+npm run dev
+npm run build
+npm run preview
+```
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## Publishing
 
-Any static assets, like images, can be placed in the `public/` directory.
+The `main` branch deploys through GitHub Pages using `.github/workflows/deploy.yml`. After GitHub Pages is enabled for the repository and `bronce.org` is connected in its Pages settings, each push to `main` automatically publishes the site. The custom domain is kept in `public/CNAME` so it is included in the built site.
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## : GitHub
-| update: `git add .` | `git commit -m "Updated XXX"` | `git push` |
-
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Replace the example blog posts in `src/content/blog/` with your own writing before publishing. Update `PROFILE`, `SOCIAL_LINKS`, and `PROJECTS` in `src/consts.ts` as the site grows.

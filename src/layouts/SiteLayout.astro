@@ -1,0 +1,27 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SiteMenu from '../components/SiteMenu.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+// The optional overrides let content pages set their own browser title and description.
+interface Props {
+	title?: string;
+	description?: string;
+	pageLabel?: string;
+}
+
+const { title = SITE_TITLE, description = SITE_DESCRIPTION, pageLabel } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<SiteMenu pageLabel={pageLabel} />
+		<main class="page-shell" id="main-content">
+			<slot />
+		</main>
+	</body>
+</html>

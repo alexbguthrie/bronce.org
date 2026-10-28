@@ -4,6 +4,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 export async function GET(context) {
 	const posts = await getCollection('blog');
+	// Reuse the same titles, dates, and URLs as the site’s Writing section.
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,

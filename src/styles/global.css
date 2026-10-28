@@ -1,141 +1,502 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
-
+/* Theme tokens: change these first to adjust the site’s overall visual tone. */
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	color-scheme: dark;
+	--page-bg: #050505;
+	--panel-bg: #0b0b0b;
+	--text: #f2f2f2;
+	--muted: #888;
+	--quiet: #555;
+	--line: #242424;
+	--content-width: 42rem;
+	--page-gutter: clamp(1.25rem, 4vw, 2rem);
+	font-family: var(--font-atkinson), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
 }
+
+/* Shared box sizing and page defaults. */
+* {
+	box-sizing: border-box;
+}
+
+html {
+	min-width: 320px;
+	background: var(--page-bg);
+	scroll-behavior: smooth;
+}
+
 body {
-	font-family: var(--font-atkinson);
+	min-height: 100vh;
 	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	background: var(--page-bg);
+	color: var(--text);
+	font-size: 1rem;
+	line-height: 1.6;
 }
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+
+body.menu-open {
+	overflow: hidden;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
-}
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
+
 a {
-	color: var(--accent);
+	color: inherit;
+	text-decoration: none;
 }
+
 a:hover {
-	color: var(--accent);
+	color: var(--muted);
 }
-p {
-	margin-bottom: 1em;
+
+button {
+	font: inherit;
 }
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
+
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: 0.5rem;
 }
-code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+
+svg {
+	display: block;
 }
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
+
+/* Page shell and reusable content sections. */
+.skip-link {
+	position: fixed;
+	z-index: 200;
+	top: 0.75rem;
+	left: 0.75rem;
+	transform: translateY(-160%);
+	padding: 0.6rem 0.85rem;
+	border-radius: 0.4rem;
+	background: var(--text);
+	color: var(--page-bg);
 }
-pre > code {
-	all: unset;
+
+.skip-link:focus {
+	transform: translateY(0);
 }
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
+
+.page-shell {
+	width: min(var(--content-width), calc(100% - 2 * var(--page-gutter)));
+	margin-inline: auto;
+	padding-block: clamp(8rem, 16vh, 12rem) 5rem;
+}
+
+.profile {
+	margin-bottom: 5rem;
+}
+
+.profile-avatar {
+	display: grid;
+	width: 3.5rem;
+	height: 3.5rem;
+	margin-bottom: 3rem;
+	place-items: center;
+	border: 1px solid var(--line);
+	border-radius: 50%;
+	background: var(--panel-bg);
+	color: var(--muted);
+	font-size: 0.9rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+}
+
+.profile h1 {
+	margin: 0 0 0.75rem;
+	font-size: clamp(1.65rem, 4vw, 2rem);
+	font-weight: 700;
+	letter-spacing: -0.035em;
+	line-height: 1.2;
+}
+
+.profile-intro {
+	max-width: 42rem;
 	margin: 0;
-	font-size: 1.333em;
+	color: #bdbdbd;
+	font-size: clamp(1.25rem, 3vw, 1.65rem);
+	font-weight: 650;
+	letter-spacing: -0.025em;
+	line-height: 1.35;
 }
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+
+.home-section {
+	margin-top: 3.5rem;
 }
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+
+.section-heading {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1.25rem;
+}
+
+.section-heading h2 {
+	margin: 0;
+	color: var(--muted);
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.section-heading a {
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+.writing-list,
+.project-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.writing-list li + li,
+.project-list li + li {
+	margin-top: 0.7rem;
+}
+
+.writing-list a,
+.project-list a {
+	font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	line-height: 1.4;
+}
+
+.post-list-date,
+.post-meta {
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+.page-title {
+	margin: 0 0 2.5rem;
+	font-size: clamp(2rem, 5vw, 2.75rem);
+	letter-spacing: -0.04em;
+	line-height: 1.1;
+}
+
+.post {
+	max-width: 100%;
+}
+
+.post-header {
+	margin-bottom: 2.5rem;
+}
+
+.post-header h1 {
+	margin: 0 0 1rem;
+	font-size: clamp(2rem, 5vw, 3rem);
+	letter-spacing: -0.04em;
+	line-height: 1.1;
+}
+
+.post-header .post-meta {
+	margin: 0 0 1rem;
+}
+
+.post-hero {
+	width: 100%;
+	height: auto;
+	margin-bottom: 2.5rem;
+	border-radius: 0.5rem;
+}
+
+.prose {
+	color: #d0d0d0;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+	margin: 2.5rem 0 0.8rem;
+	color: var(--text);
+	letter-spacing: -0.025em;
+}
+
+.prose h2 {
+	font-size: 1.7rem;
+}
+
+.prose h3 {
+	font-size: 1.35rem;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+	margin: 0 0 1.25rem;
+}
+
+.prose a {
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.prose code {
+	padding: 0.12em 0.35em;
+	border-radius: 0.25rem;
+	background: #1c1c1c;
+	color: #eee;
+	font-size: 0.9em;
+}
+
+.prose pre {
+	max-width: 100%;
+	padding: 1rem;
+	overflow-x: auto;
+	border: 1px solid var(--line);
+	border-radius: 0.5rem;
+	background: var(--panel-bg);
+}
+
+.prose pre > code {
+	padding: 0;
+	background: transparent;
+}
+
+.prose blockquote {
+	margin: 1.5rem 0;
+	padding-left: 1rem;
+	border-left: 2px solid var(--quiet);
+	color: var(--muted);
+}
+
+.prose hr {
+	margin: 2rem 0;
+	border: 0;
+	border-top: 1px solid var(--line);
+}
+
+/* Fixed menu control and full-screen navigation overlay. */
+.menu-toggle {
+	position: fixed;
+	z-index: 120;
+	top: 1rem;
+	left: 1rem;
+	display: grid;
+	width: 2.5rem;
+	height: 2.5rem;
+	padding: 0;
+	place-items: center;
+	border: 0;
+	border-radius: 0.5rem;
+	background: transparent;
+	color: var(--text);
+	cursor: pointer;
+}
+
+.menu-toggle:hover {
+	background: #171717;
+}
+
+/* Breadcrumb stays beside the menu control on pages with a section label. */
+.page-breadcrumb {
+	position: fixed;
+	z-index: 109;
+	top: 1.65rem;
+	left: 4.25rem;
+	max-width: calc(100vw - 5.25rem);
+	color: var(--muted);
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1.25;
+}
+
+.page-breadcrumb ol {
+	display: flex;
+	width: 100%;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	align-items: center;
+	gap: 0.75rem;
+	list-style: none;
+}
+
+.page-breadcrumb li {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.page-breadcrumb li:first-child {
+	flex: 0 0 auto;
+}
+
+.page-breadcrumb li:last-child {
+	min-width: 0;
+}
+
+.page-breadcrumb li + li::before {
+	margin-right: 0.75rem;
+	color: var(--quiet);
+	content: '/';
+}
+
+.page-breadcrumb a {
+	color: var(--text);
+	text-decoration: none;
+}
+
+.page-breadcrumb a:hover {
+	color: var(--muted);
+}
+
+.menu-icon {
+	position: relative;
+	width: 1.15rem;
+	height: 0.9rem;
+}
+
+.menu-icon span {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	border-radius: 2px;
+	background: currentColor;
+	transition: transform 160ms ease, top 160ms ease, opacity 120ms ease;
+}
+
+.menu-icon span:nth-child(1) { top: 0; }
+.menu-icon span:nth-child(2) { top: 0.4rem; }
+.menu-icon span:nth-child(3) { top: 0.8rem; }
+
+.menu-toggle[aria-expanded="true"] .menu-icon span:nth-child(1) {
+	top: 0.4rem;
+	transform: rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-icon span:nth-child(2) {
+	opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] .menu-icon span:nth-child(3) {
+	top: 0.4rem;
+	transform: rotate(-45deg);
+}
+
+.menu-panel {
+	position: fixed;
+	z-index: 110;
+	inset: 0;
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 5rem var(--page-gutter) 2rem;
+	background: var(--page-bg);
+	overflow-y: auto;
+	opacity: 0;
+	transition: opacity 180ms ease;
+}
+
+.menu-panel.is-open {
+	opacity: 1;
+}
+
+.menu-panel[hidden] {
+	display: none !important;
+}
+
+.menu-content {
+	width: 100%;
+}
+
+.menu-group + .menu-group {
+	margin-top: 2.5rem;
+}
+
+.menu-group-label {
+	margin: 0 0 0.75rem;
+	color: var(--quiet);
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+
+.menu-list {
+	display: grid;
+	gap: 0.8rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.menu-link {
+	width: fit-content;
+	color: var(--muted);
+	font-size: clamp(1.4rem, 4vw, 1.8rem);
+	font-weight: 650;
+	letter-spacing: -0.035em;
+	line-height: 1.2;
+}
+
+.menu-link[aria-current="page"],
+.menu-link:hover {
+	color: var(--text);
+}
+
+.menu-socials {
+	display: flex;
+	gap: 1.1rem;
+	width: auto;
+	margin: 3rem 0 0;
+}
+
+.menu-socials a {
+	display: grid;
+	width: 2rem;
+	height: 2rem;
+	place-items: center;
+	color: var(--quiet);
+}
+
+.menu-socials a:hover {
+	color: var(--text);
+}
+
+.menu-socials svg {
+	width: 1.35rem;
+	height: 1.35rem;
 }
 
 .sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
 	position: absolute !important;
-	height: 1px;
 	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
+	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
+	clip-path: inset(50%);
+	border: 0;
+}
+
+/* Keep the profile compact on narrow screens. */
+@media (max-width: 600px) {
+	.page-shell {
+		padding-top: 7rem;
+	}
+
+	.profile {
+		margin-bottom: 3.5rem;
+	}
+
+	.profile-avatar {
+		margin-bottom: 2rem;
+	}
+}
+
+/* Respect visitors who ask their device to reduce motion. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+	}
 }
