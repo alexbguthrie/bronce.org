@@ -1,0 +1,410 @@
+/* Shared styling for the modular Zeus components in components/zeus and the /Zeus page. */
+.agent-page {
+	width: 100%;
+	height: 100vh;
+	min-height: 36rem;
+	overflow: hidden;
+	background: #000;
+	color: #ececec;
+}
+
+/* App frame and fixed navigation rail. */
+.zeus-shell {
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+
+.zeus-sidebar {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	width: 4.25rem;
+	flex: 0 0 4.25rem;
+	align-items: center;
+	flex-direction: column;
+	gap: 1.1rem;
+	padding: 0.75rem 0.55rem;
+	border-right: 1px solid #202020;
+	background: #080808;
+}
+
+.zeus-back,
+.zeus-tools button,
+.zeus-avatar {
+	display: grid;
+	width: 2.5rem;
+	height: 2.5rem;
+	place-items: center;
+	border: 0;
+	border-radius: 0.65rem;
+	background: transparent;
+	color: #d0d0d0;
+}
+
+.zeus-back:hover {
+	background: #202020;
+	color: #fff;
+}
+
+.zeus-back svg,
+.zeus-tools svg {
+	width: 1.35rem;
+	height: 1.35rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
+}
+
+.zeus-tools {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.zeus-tools button {
+	color: #aaa;
+}
+
+.zeus-tools button:first-child {
+	background: #1d1d1d;
+	color: #eee;
+}
+
+.zeus-tools button:disabled,
+.zeus-composer button:disabled,
+.zeus-suggestions button:disabled {
+	cursor: default;
+}
+
+.zeus-avatar {
+	position: absolute;
+	bottom: 1rem;
+	border-radius: 50%;
+	background: #087e73;
+	color: #fff;
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+/* Shared welcome screen and message composer. */
+.zeus-main {
+	position: relative;
+	display: grid;
+	min-width: 0;
+	flex: 1;
+	place-items: center;
+	padding: 3rem 2rem;
+}
+
+.zeus-preview-label {
+	position: absolute;
+	top: 1.25rem;
+	left: 1.5rem;
+	color: #ddd;
+	font-size: 0.95rem;
+	font-weight: 500;
+}
+
+.zeus-preview-label span {
+	margin-left: 0.5rem;
+	color: #888;
+	font-size: 0.75rem;
+	font-weight: 400;
+}
+
+.zeus-home {
+	width: min(100%, 48rem);
+}
+
+.zeus-home h1 {
+	margin: 0 0 2rem;
+	color: #e7e7e7;
+	font-size: clamp(1.5rem, 3vw, 1.9rem);
+	font-weight: 400;
+	letter-spacing: -0.035em;
+	text-align: center;
+}
+
+.zeus-composer {
+	display: flex;
+	min-height: 3.5rem;
+	align-items: center;
+	gap: 0.65rem;
+	padding: 0.45rem 0.55rem 0.45rem 1rem;
+	border: 1px solid #282828;
+	border-radius: 1.8rem;
+	background: #1b1b1b;
+	box-shadow: 0 0.2rem 1.3rem rgb(0 0 0 / 20%);
+}
+
+.zeus-input {
+	width: 100%;
+	min-width: 0;
+	flex: 1;
+	min-height: 1.6rem;
+	max-height: 10rem;
+	padding: 0.35rem 0;
+	resize: none;
+	border: 0;
+	outline: 0;
+	background: transparent;
+	color: #eee;
+	font: inherit;
+	font-size: 1rem;
+	line-height: 1.45;
+}
+
+.zeus-input::placeholder {
+	color: #aaa;
+	opacity: 1;
+}
+
+.zeus-add,
+.zeus-mode,
+.zeus-mic,
+.zeus-send {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 0;
+	background: transparent;
+	color: #bcbcbc;
+}
+
+.zeus-add {
+	width: 1.5rem;
+	padding: 0;
+	font-size: 1.6rem;
+	font-weight: 300;
+}
+
+.zeus-composer-tools {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.zeus-mode {
+	gap: 0.4rem;
+	padding: 0.45rem;
+	font-size: 0.95rem;
+}
+
+.zeus-mode svg,
+.zeus-mic svg {
+	width: 1.25rem;
+	height: 1.25rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
+}
+
+.zeus-mic {
+	width: 2rem;
+	height: 2rem;
+}
+
+.zeus-send {
+	width: 2.5rem;
+	height: 2.5rem;
+	flex: 0 0 2.5rem;
+	border-radius: 50%;
+	background: #2768c8;
+	color: white;
+	cursor: pointer;
+}
+
+.zeus-send:disabled {
+	background: #303030;
+	color: #737373;
+}
+
+.zeus-send svg {
+	width: 1.2rem;
+	height: 1.2rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-width: 2;
+}
+
+/* Open-thread view: scrollable transcript with a composer pinned to the bottom. */
+.zeus-main[data-state="chat"] {
+	display: block;
+	padding: 0;
+}
+
+.zeus-home[hidden],
+.zeus-chat[hidden] {
+	display: none;
+}
+
+.zeus-chat {
+	width: 100%;
+	height: 100%;
+	padding: 5rem 2rem 9rem;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+}
+
+.zeus-messages {
+	width: min(100%, 48rem);
+	margin-inline: auto;
+	padding-bottom: 1rem;
+}
+
+.zeus-message {
+	margin: 0 0 1.8rem;
+	color: #e7e7e7;
+	font-size: 1rem;
+	line-height: 1.65;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.zeus-message-user {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.zeus-message-user .zeus-message-body {
+	max-width: min(82%, 38rem);
+	padding: 0.75rem 1rem;
+	border-radius: 1.35rem;
+	background: #242424;
+}
+
+.zeus-message-label {
+	margin-bottom: 0.4rem;
+	color: #aaa;
+	font-size: 0.85rem;
+	font-weight: 500;
+}
+
+.zeus-message-body {
+	overflow-wrap: anywhere;
+}
+
+.zeus-typing {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.28rem;
+	min-height: 1.5rem;
+}
+
+.zeus-typing span {
+	width: 0.35rem;
+	height: 0.35rem;
+	border-radius: 50%;
+	background: #aaa;
+	animation: zeus-typing-pulse 900ms ease-in-out infinite alternate;
+}
+
+.zeus-typing span:nth-child(2) { animation-delay: 150ms; }
+.zeus-typing span:nth-child(3) { animation-delay: 300ms; }
+
+@keyframes zeus-typing-pulse {
+	from { opacity: 0.3; transform: translateY(0); }
+	to { opacity: 1; transform: translateY(-0.2rem); }
+}
+
+.zeus-chat-dock {
+	position: fixed;
+	z-index: 2;
+	bottom: 1.25rem;
+	left: calc(4.25rem + (100vw - 4.25rem) / 2);
+	width: min(48rem, calc(100vw - 4.25rem - 3rem));
+	transform: translateX(-50%);
+}
+
+.zeus-chat-dock .zeus-composer {
+	box-shadow: 0 0 1.5rem rgb(0 0 0 / 55%);
+}
+
+.zeus-suggestions {
+	display: grid;
+	gap: 0.45rem;
+	margin-top: 1.8rem;
+}
+
+.zeus-suggestions button {
+	display: flex;
+	width: fit-content;
+	align-items: center;
+	gap: 0.8rem;
+	padding: 0.55rem 0.65rem;
+	border: 0;
+	border-radius: 0.6rem;
+	background: transparent;
+	color: #aaa;
+	font: inherit;
+	font-size: 0.95rem;
+	text-align: left;
+	cursor: pointer;
+}
+
+.zeus-suggestions button:hover {
+	background: #171717;
+	color: #eee;
+}
+
+.zeus-suggestions svg {
+	width: 1.2rem;
+	height: 1.2rem;
+	fill: none;
+	stroke: #777;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
+}
+
+/* Reduce sidebar and composer spacing on smaller screens. */
+@media (max-width: 600px) {
+	.zeus-sidebar {
+		width: 3.5rem;
+		flex-basis: 3.5rem;
+		padding-inline: 0.45rem;
+	}
+
+	.zeus-main {
+		padding: 3rem 1rem;
+	}
+
+	.zeus-home {
+		margin-top: 0;
+	}
+
+	.zeus-home h1 {
+		margin-bottom: 1.4rem;
+	}
+
+	.zeus-composer {
+		gap: 0.35rem;
+		padding-left: 0.7rem;
+	}
+
+	.zeus-mode {
+		font-size: 0;
+	}
+
+	.zeus-suggestions {
+		margin-top: 1rem;
+	}
+
+	.zeus-chat {
+		padding: 4.5rem 1rem 8rem;
+	}
+
+	.zeus-chat-dock {
+		bottom: 0.75rem;
+		left: calc(3.5rem + (100vw - 3.5rem) / 2);
+		width: calc(100vw - 3.5rem - 1.5rem);
+	}
+}

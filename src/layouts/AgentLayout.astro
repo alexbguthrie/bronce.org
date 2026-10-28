@@ -1,0 +1,23 @@
+---
+/** Standalone assistant layout; loads shared metadata and agent-only styles without SiteMenu. */
+import BaseHead from '../components/BaseHead.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import '../styles/agent.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title = `Zeus · ${SITE_TITLE}`, description = SITE_DESCRIPTION } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body class="agent-page">
+		<slot />
+	</body>
+</html>

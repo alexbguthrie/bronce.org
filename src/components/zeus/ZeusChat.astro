@@ -1,0 +1,158 @@
+---
+/** Composes the Zeus sidebar, welcome composer, and conversation, then binds their local demo behavior. */
+import ZeusSidebar from './ZeusSidebar.astro';
+import ZeusComposer from './ZeusComposer.astro';
+import ZeusConversation from './ZeusConversation.astro';
+---
+
+<div class="zeus-shell">
+	<ZeusSidebar />
+	<main class="zeus-main" data-zeus-main data-state="home">
+		<div class="zeus-preview-label">Zeus <span>Local demo</span></div>
+		<ZeusComposer />
+		<ZeusConversation />
+	</main>
+</div>
+
+<script>
+	import { streamDemoResponse } from '../../lib/zeus/demoAgent';
+
+	// Browser behavior lives here; the visible markup and layout are split into the sibling components above.
+	// Keep these data attributes in sync with ZeusSidebar, ZeusComposer, and ZeusConversation.
+	const main = document.querySelector<HTMLElement>('[data-zeus-main]');
+	const homeView = document.querySelector<HTMLElement>('[data-home-view]');
+	const chatView = document.querySelector<HTMLElement>('[data-chat-view]');
+	const composer = document.querySelector<HTMLFormElement>('[data-composer]');
+	const chatDock = document.querySelector<HTMLElement>('[data-chat-dock]');
+	const messageList = document.querySelector<HTMLElement>('[data-messages]');
+	const input = document.querySelector<HTMLTextAreaElement>('[data-message-input]');
+	const sendButton = document.querySelector<HTMLButtonElement>('[data-send-message]');
+	const newChatButton = document.querySelector<HTMLButtonElement>('[data-new-chat]');
+	const suggestions = document.querySelector<HTMLElement>('.zeus-suggestions');
+
+	if (main && homeView && chatView && composer && chatDock && messageList && input && sendButton) {
+		let isResponding = false;
+		// Incrementing this invalidates any response still streaming when the user starts a new chat.
+		let responseRun = 0;
+
+		const updateSendButton = () => {
+			sendButton.disabled = isResponding || input.value.trim().length === 0;
+		};
+
+		// Build message nodes with textContent/text nodes so user text is never interpreted as markup.
+		const addMessage = (role: 'user' | 'assistant') => {
+			const article = document.createElement('article');
+			article.className = `zeus-message zeus-message-${role}`;
+			article.setAttribute('aria-label', role === 'user' ? 'Your message' : 'Zeus response');
+
+			if (role === 'assistant') {
+				const label = document.createElement('div');
+				label.className = 'zeus-message-label';
+				label.textContent = 'Zeus';
+				article.append(label);
+			}
+
+			const body = document.createElement('div');
+			body.className = 'zeus-message-body';
+			article.append(body);
+			messageList.append(article);
+			return body;
+		};
+
+		const scrollToLatest = () => {
+			chatView.scrollTop = chatView.scrollHeight;
+		};
+
+		// Switch to the transcript and move the same composer into its bottom dock.
+		const showConversation = (prompt: string) => {
+			main.dataset.state = 'chat';
+			homeView.hidden = true;
+			chatView.hidden = false;
+			chatDock.append(composer);
+
+			const userMessage = addMessage('user');
+			userMessage.textContent = prompt;
+			const replyBody = addMessage('assistant');
+			const typing = document.createElement('span');
+			typing.className = 'zeus-typing';
+			typing.setAttribute('aria-label', 'Zeus is typing');
+			for (let dot = 0; dot < 3; dot += 1) {
+				typing.append(document.createElement('span'));
+			}
+			replyBody.append(typing);
+			scrollToLatest();
+
+			return replyBody;
+		};
+
+		// Submit one prompt, then display chunks from the replaceable demo response adapter.
+		composer.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			const prompt = input.value.trim();
+			if (!prompt || isResponding) return;
+
+			input.value = '';
+			input.style.height = 'auto';
+			isResponding = true;
+			updateSendButton();
+			const run = ++responseRun;
+			const responseTarget = showConversation(prompt);
+			const typing = responseTarget.querySelector('.zeus-typing');
+			let firstChunk = true;
+
+			for await (const chunk of streamDemoResponse(prompt)) {
+				if (run !== responseRun) return;
+				if (firstChunk) {
+					typing?.remove();
+					firstChunk = false;
+				}
+				responseTarget.append(document.createTextNode(chunk));
+				scrollToLatest();
+			}
+
+			if (run === responseRun) {
+				isResponding = false;
+				updateSendButton();
+				input.focus();
+			}
+		});
+
+		// Grow the textarea to fit a multi-line prompt, up to the CSS maximum height.
+		input.addEventListener('input', () => {
+			input.style.height = 'auto';
+			input.style.height = `${Math.min(input.scrollHeight, 160)}px`;
+			updateSendButton();
+		});
+
+		input.addEventListener('keydown', (event) => {
+			if (event.key === 'Enter' && !event.shiftKey) {
+				event.preventDefault();
+				if (!sendButton.disabled) composer.requestSubmit();
+			}
+		});
+
+		// Suggestions prefill the composer; visitors can review or edit before sending.
+		suggestions?.querySelectorAll<HTMLButtonElement>('[data-suggestion]').forEach((button) => {
+			button.addEventListener('click', () => {
+				input.value = button.dataset.suggestion ?? '';
+				input.dispatchEvent(new Event('input', { bubbles: true }));
+				input.focus();
+			});
+		});
+
+		// Clear the demo thread, cancel an in-flight reply, and return the composer to the welcome view.
+		newChatButton?.addEventListener('click', () => {
+			responseRun += 1;
+			isResponding = false;
+			messageList.replaceChildren();
+			input.value = '';
+			input.style.height = 'auto';
+			homeView.insertBefore(composer, suggestions);
+			homeView.hidden = false;
+			chatView.hidden = true;
+			main.dataset.state = 'home';
+			updateSendButton();
+			input.focus();
+		});
+	}
+</script>

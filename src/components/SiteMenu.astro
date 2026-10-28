@@ -1,7 +1,7 @@
 ---
 /** Full-screen navigation, app grid, and social links; content comes from ../consts.ts. */
 import SocialLinks from './SocialLinks.tsx';
-import { MENU_LINKS, PROJECTS, SITE_TITLE } from '../consts';
+import { MENU_LINKS, PROJECT_LINKS, SITE_TITLE } from '../consts';
 
 interface Props {
 	pageLabel?: string;
@@ -62,30 +62,20 @@ const isCurrent = (href: string) =>
 			</nav>
 		</section>
 
-		{PROJECTS.length > 0 && (
-			<section class="menu-group" aria-labelledby="menu-apps-heading">
-				<h2 class="menu-group-label" id="menu-apps-heading">Apps</h2>
-				<ul class="app-grid">
-					{PROJECTS.map((app) => (
+		<section class="menu-group" aria-labelledby="menu-projects-heading">
+			<h2 class="menu-group-label" id="menu-projects-heading">Projects</h2>
+			<nav aria-label="Projects">
+				<ul class="menu-list">
+					{PROJECT_LINKS.map(({ label, href }) => (
 						<li>
-							<a class="app-card" href={app.href}>
-								{app.icon ? (
-									<img class="app-icon" src={app.icon} alt="" loading="lazy" />
-								) : (
-									<span class="app-icon app-icon-fallback" aria-hidden="true">
-										{app.title.slice(0, 1).toUpperCase()}
-									</span>
-								)}
-								<span class="app-name">{app.title}</span>
-								{(app.date || app.description) && (
-									<span class="app-date">{app.date ?? app.description}</span>
-								)}
+							<a class="menu-link" href={href} aria-current={isCurrent(href) ? 'page' : undefined}>
+								{label}
 							</a>
 						</li>
 					))}
 				</ul>
-			</section>
-		)}
+			</nav>
+		</section>
 	</div>
 	<SocialLinks />
 </div>

@@ -1,0 +1,10 @@
+---
+/** Public Zeus route; AgentLayout and ZeusChat keep the assistant separate from the site menu. */
+import AgentLayout from '../layouts/AgentLayout.astro';
+import ZeusChat from '../components/zeus/ZeusChat.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<AgentLayout title={`Zeus · ${SITE_TITLE}`} description="A local conversation demo for the Zeus assistant on bronce.org.">
+	<ZeusChat />
+</AgentLayout>

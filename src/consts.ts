@@ -25,6 +25,12 @@ export const MENU_LINKS = [
 	{ label: 'Writing', href: '/blog/' },
 ] satisfies MenuLink[];
 
+/** Project destinations listed beneath the Projects heading in the menu. */
+export const PROJECT_LINKS = [
+	{ label: 'Agent', href: '/Zeus' },
+	{ label: 'Apps', href: '/apps/' },
+] satisfies MenuLink[];
+
 export type SocialIconName = 'github' | 'rss' | 'coffee';
 
 export interface SocialLink {
@@ -51,5 +57,24 @@ export interface Project {
 	description?: string;
 }
 
-/** Apps are rendered in the menu grid and as a text list on the homepage. */
+/** Projects are rendered in the menu grid, Apps page, and homepage list. */
 export const PROJECTS: Project[] = [];
+
+/** Temporary sample cards used only to preview the Apps page before projects are added. */
+export const PROJECT_GRID_PREVIEW: Project[] = [
+	{ title: 'Studio', href: '', date: 'May 2025' },
+	{ title: 'Field Notes', href: '', date: 'April 2025' },
+	{ title: 'Canvas', href: '', date: 'March 2025' },
+	{ title: 'Garden', href: '', date: 'March 2025' },
+	{ title: 'Archive', href: '', date: 'February 2025' },
+	{ title: 'Compass', href: '', date: 'February 2025' },
+	{ title: 'Reader', href: '', date: 'January 2025' },
+	{ title: 'Soundboard', href: '', date: 'January 2025' },
+	{ title: 'Journal', href: '', date: 'December 2024' },
+	{ title: 'Focus', href: '', date: 'December 2024' },
+	{ title: 'Gallery', href: '', date: 'November 2024' },
+	{ title: 'Weather', href: '', date: 'November 2024' },
+	{ title: 'Map Room', href: '', date: 'October 2024' },
+	{ title: 'Pocket List', href: '', date: 'October 2024' },
+	{ title: 'Timer', href: '', date: 'September 2024' },
+];

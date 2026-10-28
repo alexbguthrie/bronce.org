@@ -1,0 +1,16 @@
+---
+/** Apps directory page; shares project data and grid markup with the site menu. */
+import ProjectGrid from '../components/ProjectGrid.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { PROJECTS, SITE_TITLE } from '../consts';
+---
+
+<SiteLayout title={`Apps · ${SITE_TITLE}`} pageLabel="Apps" wide>
+	<section aria-labelledby="apps-heading">
+		<h1 class="page-title" id="apps-heading">Apps</h1>
+		{PROJECTS.length === 0 && (
+			<p class="apps-preview-note">Sample layout preview. Replace these examples with your own projects in <code>src/consts.ts</code>.</p>
+		)}
+		<ProjectGrid />
+	</section>
+</SiteLayout>

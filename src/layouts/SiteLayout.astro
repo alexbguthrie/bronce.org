@@ -8,9 +8,10 @@ interface Props {
 	title?: string;
 	description?: string;
 	pageLabel?: string;
+	wide?: boolean;
 }
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION, pageLabel } = Astro.props;
+const { title = SITE_TITLE, description = SITE_DESCRIPTION, pageLabel, wide = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -20,7 +21,7 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION, pageLabel } = Astro.
 	</head>
 	<body>
 		<SiteMenu pageLabel={pageLabel} />
-		<main class="page-shell" id="main-content">
+		<main class:list={['page-shell', { 'page-shell-wide': wide }]} id="main-content">
 			<slot />
 		</main>
 	</body>

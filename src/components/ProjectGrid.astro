@@ -1,0 +1,43 @@
+---
+/** Reusable project icon grid for the /apps/ page, with sample cards until real entries exist. */
+import { PROJECTS, PROJECT_GRID_PREVIEW } from '../consts';
+
+const isPreview = PROJECTS.length === 0;
+const visibleProjects = isPreview ? PROJECT_GRID_PREVIEW : PROJECTS;
+---
+
+<ul class:list={['app-grid', { 'app-grid-preview': isPreview }]}>
+	{visibleProjects.map((project) => (
+		<li>
+			{isPreview ? (
+				<div class="app-card">
+					{project.icon ? (
+						<img class="app-icon" src={project.icon} alt="" loading="lazy" />
+					) : (
+						<span class="app-icon app-icon-fallback" aria-hidden="true">
+							{project.title.slice(0, 1).toUpperCase()}
+						</span>
+					)}
+					<span class="app-name">{project.title}</span>
+					{(project.date || project.description) && (
+						<span class="app-date">{project.date ?? project.description}</span>
+					)}
+				</div>
+			) : (
+				<a class="app-card" href={project.href}>
+					{project.icon ? (
+						<img class="app-icon" src={project.icon} alt="" loading="lazy" />
+					) : (
+						<span class="app-icon app-icon-fallback" aria-hidden="true">
+							{project.title.slice(0, 1).toUpperCase()}
+						</span>
+					)}
+					<span class="app-name">{project.title}</span>
+					{(project.date || project.description) && (
+						<span class="app-date">{project.date ?? project.description}</span>
+					)}
+				</a>
+			)}
+		</li>
+	))}
+</ul>
